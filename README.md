@@ -1,8 +1,5 @@
-# AI-System-Risk-Online-Moderation
+# System Risk in Policy Driven AI Systems
 System risk and governance analysis of toxicity moderation models using corrected labels, ambiguity-aware evaluation, and fairness diagnostics.
-
-# System Risk in Policy-Driven AI Systems  
-**A Governance-Aligned Evaluation of Online Content Moderation Models**
 
 This project was completed as part of a capstone researcch effort at Arizona State University, examining **system-level risk in policy-driven AI systems** through a case study of automated toxicity detection.
 
@@ -18,10 +15,23 @@ How do data ambiguity, label noise, identity-linked correlations, and evaluation
 ## System Risk Framework
 This project operationalizes **four interrelated dimensions of system risk**:
 
-1. **Origin Risk** – Subjectivity, ambiguity, and inconsistency in human annotations  
-2. **Propagation Risk** – Shortcut learning and identity-linked bias inherited from training data  
-3. **Outcome Risk** – Unequal error distribution across identity subgroups  
-4. **Governance Risk** – Inflated model performance under legacy evaluation that collapses under corrected labels  
+1. **Origin Risk** – Subjectivity, ambiguity, and inconsistency in human annotations.
+2. **Propagation Risk** – Shortcut learning and identity-linked bias inherited from training data. 
+3. **Outcome Risk** – Unequal error distribution across identity subgroups.  
+4. **Governance Risk** – Inflated model performance under legacy evaluation that collapses under corrected labels.  
+
+---
+
+## Repository Structure
+```text
+analysis/
+├── civil_comments_preprocessing.ipynb
+├── system_risk_eda.ipynb
+└── golden_dataset_construction/
+└── golden_dataset_construction.ipynb
+
+paper/
+└── System_Risk_in_Policy_Driven_AI_Systems.pdf
 
 ---
 
@@ -30,36 +40,56 @@ This project operationalizes **four interrelated dimensions of system risk**:
 - ~2 million online comments annotated for seven harm categories
 - No demographic attributes provided → **identity indicators were engineered** using a curated lexicon
 
-### Golden Dataset (Key Contribution)
-To address label noise and ambiguity, we constructed a **Golden Dataset**:
-- 310 high-impact, borderline, and ambiguous comments
-- Manually re-labeled by two human annotators
-- Includes:
-  - Corrected harm labels
-  - Explicit ambiguity codes
-  - Reconstructed agreement fields
+## Analysis Components
 
-This dataset serves as a **governance-aligned benchmark** rather than a conventional test set.
+### 1. Civil Comments Preprocessing
+**`analysis/civil_comments_preprocessing.ipynb`**
+
+Prepares the Civil Comments dataset for downstream analysis by:
+- selecting relevant labels  
+- handling missing values  
+- applying minimal text preprocessing  
+- producing analysis-ready splits  
+
+> Raw datasets are not included. Users must obtain the Civil Comments dataset under its original license.
 
 ---
 
-## 🛠️ Methods
-### Exploratory Risk Diagnostics
-- Risk-structured EDA aligned with the four system risk dimensions
-- Analyses include:
-  - Inter-label correlations
-  - Identity term PMI (bias signals)
-  - Ambiguity concentration analysis
-  - Temporal drift patterns
+### 2. System Risk Exploratory Analysis
+**`analysis/system_risk_eda.ipynb`**
 
-### Modeling Pipeline
-- Baseline: Logistic Regression (TF–IDF)
-- Transformer models: **DistilRoBERTa**
-- Training on a **1% stratified sample** to manage computational constraints
+Explores systemic risks embedded in the dataset, including:
+- inter-label inconsistencies  
+- text length effects on toxicity prediction  
+- identity-term correlations  
+- bias signals via pointwise mutual information (PMI)  
+- rater disagreement and ambiguity patterns  
 
-### Mitigation Strategies
-- **Identity Masking** – Removes explicit identity terms from text
-- **Sample Reweighting** – Cost-sensitive loss to address class imbalance
+This notebook focuses on **risk discovery**, not model optimization.
+
+---
+
+### 3. Golden Dataset Construction
+**`analysis/golden_dataset_construction/golden_dataset_construction.ipynb`**
+
+Constructs a governance-aligned **Golden Dataset** designed to expose risks hidden by legacy labels.
+
+Key features:
+- risk-focused sampling (borderline, harmful, and clean cases)  
+- explicit encoding of annotation ambiguity  
+- label expansion and cleaning for evaluation use  
+
+Labeled outputs are intentionally excluded from version control.
+
+---
+
+## Final Report
+**`paper/System_Risk_in_Policy_Driven_AI_Systems.pdf`**
+
+The final paper synthesizes findings across preprocessing, exploratory analysis, and Golden Dataset evaluation, with emphasis on:
+- fairness–accuracy trade-offs  
+- governance failure modes  
+- implications for responsible AI deployment  
 
 ---
 
@@ -83,11 +113,3 @@ Legacy evaluation substantially overstates model reliability and fairness in pol
 
 ---
 
-## Repository Structure
-```text
-ai-system-risk-online-moderation/
-├── paper/            # LaTeX source files for the report
-├── analysis/         # EDA and system risk diagnostics notebook
-├── pdf/              # Final compiled report
-├── README.md
-└── .gitignore
